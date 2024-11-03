@@ -20,7 +20,7 @@ public class Product {
     private Integer stock;
     @Column(name = "category_id")
     private Long categoryId;
-    @Column(name = "image_url", nullable = false)
+    @Column(name = "image_url")
     private String imageUrl;
 
     @ManyToOne

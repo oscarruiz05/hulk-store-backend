@@ -1,12 +1,12 @@
 package com.example.hulk_store_backend.service.Implementation;
 
 import com.example.hulk_store_backend.dto.ProductDTO;
-import com.example.hulk_store_backend.model.Category;
 import com.example.hulk_store_backend.model.Product;
 import com.example.hulk_store_backend.repository.ProductRepository;
 import com.example.hulk_store_backend.service.Interfaces.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +32,8 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductDTO save(ProductDTO productDTO) {
-        return this.modelMapper.map(this.productRepository.save(this.modelMapper.map(productDTO, Product.class)), ProductDTO.class);
+        Product product = this.modelMapper.map(productDTO, Product.class);
+        return this.modelMapper.map(this.productRepository.save(product), ProductDTO.class);
     }
 
     @Override
