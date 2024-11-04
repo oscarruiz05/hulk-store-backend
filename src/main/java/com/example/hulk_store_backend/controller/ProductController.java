@@ -1,6 +1,7 @@
 package com.example.hulk_store_backend.controller;
 
 import com.example.hulk_store_backend.dto.ProductDTO;
+import com.example.hulk_store_backend.response.ApiResponse;
 import com.example.hulk_store_backend.service.Interfaces.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,8 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> findById(@PathVariable Long id){
-        return new ResponseEntity<>(this.productService.findById(id), HttpStatus.OK);
+    public ResponseEntity<ApiResponse<ProductDTO>> findById(@PathVariable Long id){
+        return new ResponseEntity<>(ApiResponse.success(this.productService.findById(id)), HttpStatus.OK);
     }
 
     @PostMapping("")
