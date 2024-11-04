@@ -11,4 +11,5 @@ public class ProductDTO {
     private Integer stock;
     private String imageUrl;
     private Long categoryId;
+    private CategoryDTO category;
 }
