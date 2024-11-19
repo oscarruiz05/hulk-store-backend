@@ -30,7 +30,12 @@ public class UserService implements IUserService {
 
     @Override
     public List<UserDTO> findAll() {
-        return null;
+        return this.userRepository.findAll().stream().map(entity -> {
+            // Decrypt credit card
+            String decryptedCreditCard = this.textEncryptor.decrypt(entity.getCreditCard());
+            entity.setCreditCard(decryptedCreditCard);
+            return this.modelMapper.map(entity, UserDTO.class);
+        }).toList();
     }
 
     @Override
@@ -57,12 +62,27 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDTO update(Long id, UserDTO user) {
-        return null;
+    public UserDTO update(Long id, UserDTO userDTO) {
+        User user = this.userRepository.findById(id).orElseGet(() -> null);
+        if (user == null) return null;
+        user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setCreditCard(userDTO.getCreditCard());
+        // Encrypt password
+        String encryptedPassword = this.passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+        // Encrypt credit card
+        String encryptedCreditCard = this.textEncryptor.encrypt(user.getCreditCard());
+        user.setCreditCard(encryptedCreditCard);
+        return this.modelMapper.map(this.userRepository.save(user), UserDTO.class);
     }
 
     @Override
     public String destroy(Long id) {
-        return null;
+        User user = this.userRepository.findById(id).orElseGet(() -> null);
+        if (user == null) return "User not found";
+        this.userRepository.delete(user);
+        return "User deleted successfully";
     }
 }

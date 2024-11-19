@@ -6,7 +6,8 @@ import com.example.hulk_store_backend.repository.ProductRepository;
 import com.example.hulk_store_backend.service.Interfaces.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,11 @@ public class ProductService implements IProductService {
     @Override
     public List<ProductDTO> findAll() {
         return this.productRepository.findAll().stream().map(entity -> this.modelMapper.map(entity, ProductDTO.class)).toList();
+    }
+
+    @Override
+    public Page<ProductDTO> findAllPage(Pageable pageable) {
+        return this.productRepository.findAllPage(pageable).map(entity -> this.modelMapper.map(entity, ProductDTO.class));
     }
 
     @Override
